@@ -4,20 +4,29 @@ server:
 spring:
   application:
     name: order-service
+
   datasource:
-    url: jdbc:postgresql://postgres:5432/ecom
+    url: jdbc:postgresql://localhost:5432/ecom
     username: ecom
     password: ecom
+
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
     open-in-view: false
+    properties:
+      hibernate:
+        default_schema: order_schema
+
   flyway:
     enabled: true
+    schemas: order_schema
+    repair-on-migrate: true
+    clean-disabled: false
 
 clients:
   product-service:
-    base-url: http://product-service:8081
+    base-url: http://localhost:8081
 
 management:
   endpoints:
@@ -42,7 +51,7 @@ management:
 otel:
   exporter:
     otlp:
-      endpoint: http://tempo:4317
+      endpoint: http://localhost:4317   # for local IntelliJ runs (Tempo in Docker -> use localhost if you port-map)
 
 resilience4j:
   retry:

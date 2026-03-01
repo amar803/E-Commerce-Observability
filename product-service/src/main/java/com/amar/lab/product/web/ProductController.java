@@ -24,33 +24,35 @@ public class ProductController {
 
     @GetMapping
     public ApiResponse<List<ProductResponse>> list() {
-        return ApiResponse.ok("ok", service.list(), MDC.get(TraceIdFilter.TRACE_ID));
+        return ApiResponse.ok("ok", service.list());
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<ProductResponse> get(@PathVariable Long id) {
-        return ApiResponse.ok("ok", service.get(id), MDC.get(TraceIdFilter.TRACE_ID));
+    public ApiResponse<ProductResponse> get(@PathVariable("id") Long id) {
+        return ApiResponse.ok("ok", service.get(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<ProductResponse> create(@Valid @RequestBody ProductRequest req) {
-        return ApiResponse.ok("created", service.create(req), MDC.get(TraceIdFilter.TRACE_ID));
+        return ApiResponse.ok("created", service.create(req));
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<ProductResponse> update(@PathVariable Long id, @Valid @RequestBody ProductRequest req) {
-        return ApiResponse.ok("updated", service.update(id, req), MDC.get(TraceIdFilter.TRACE_ID));
+    public ApiResponse<ProductResponse> update(@PathVariable("id") Long id,
+                                               @Valid @RequestBody ProductRequest req) {
+        return ApiResponse.ok("updated", service.update(id, req));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable("id") Long id) {
         service.delete(id);
     }
 
+    // Internal endpoint for order-service
     @GetMapping("/internal/{id}/exists")
-    public boolean exists(@PathVariable Long id) {
+    public boolean exists(@PathVariable("id") Long id) {
         return service.exists(id);
     }
 }
