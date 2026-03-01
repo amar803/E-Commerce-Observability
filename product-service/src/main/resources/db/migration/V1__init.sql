@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS products (
+  id BIGSERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  sku VARCHAR(255) NOT NULL UNIQUE,
+  price NUMERIC(12,2) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_products_sku ON products(sku);

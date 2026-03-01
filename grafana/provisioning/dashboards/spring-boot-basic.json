@@ -1,0 +1,56 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "HTTP Requests (count)",
+      "targets": [
+        {
+          "expr": "sum(rate(http_server_requests_seconds_count{application=~\"product-service|order-service\"}[1m])) by (application, uri, status)"
+        }
+      ],
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "CircuitBreaker State (order-service)",
+      "targets": [
+        {
+          "expr": "resilience4j_circuitbreaker_state{application=\"order-service\"}"
+        }
+      ],
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      }
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": [
+    "spring-boot",
+    "resilience4j",
+    "tempo"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "title": "Spring Boot + Resilience (Basic)",
+  "uid": "sb-basic-v2",
+  "version": 1
+}

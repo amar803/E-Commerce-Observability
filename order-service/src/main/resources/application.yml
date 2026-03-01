@@ -1,0 +1,71 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:postgresql://postgres:5432/ecom
+    username: ecom
+    password: ecom
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+
+clients:
+  product-service:
+    base-url: http://product-service:8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,loggers,threaddump,heapdump,env,configprops
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
+
+otel:
+  exporter:
+    otlp:
+      endpoint: http://tempo:4317
+
+resilience4j:
+  retry:
+    instances:
+      productService:
+        maxAttempts: 2
+        waitDuration: 300ms
+        retryExceptions:
+          - java.lang.RuntimeException
+  circuitbreaker:
+    instances:
+      productService:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 2
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        recordExceptions:
+          - java.lang.RuntimeException
+
+logging:
+  file:
+    name: logs/order-service.json
+  level:
+    root: INFO
