@@ -6,7 +6,7 @@ spring:
     name: order-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/ecom
+    url: jdbc:postgresql://postgres:5432/ecom
     username: ecom
     password: ecom
 

@@ -21,5 +21,11 @@ output.elasticsearch:
   index: "app-logs-%{+yyyy.MM.dd}"
 
 processors:
+  - rename:
+      fields:
+        - from: "service"
+          to: "service.name"
+      ignore_missing: true
+      fail_on_error: false
   - add_host_metadata: {}
   - add_cloud_metadata: {}
